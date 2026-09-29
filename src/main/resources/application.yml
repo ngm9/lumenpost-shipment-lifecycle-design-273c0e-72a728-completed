@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: shipment-lifecycle
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://postgres-writer.dublin.internal:5432/lumenpost}
+    username: ${DATABASE_USERNAME:lumenpost}
+    password: ${DATABASE_PASSWORD:lumenpost}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:40}
+      minimum-idle: ${DB_POOL_MIN_IDLE:10}
+      connection-timeout: 15000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+lumenpost:
+  region: ${REGION:dublin}
+  capacity-url: ${CAPACITY_URL:http://capacity.internal}
+  payment-url: ${PAYMENT_URL:http://payment.internal}
+  carrier-url: ${CARRIER_URL:http://carrier-host.internal}
+  notification-url: ${NOTIFICATION_URL:http://notification.internal}
